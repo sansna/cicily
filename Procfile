@@ -1,1 +1,1 @@
-v2: bin/cicily
+web: bin/cicily
