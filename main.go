@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sansna/cicily/v2/models"
@@ -97,5 +98,6 @@ func f(c *gin.Context) {
 func main() {
 	r := gin.Default()
 	r.GET("/getmatch", f)
-	r.Run(":8888")
+	port := os.Getenv("PORT")
+	r.Run(":"+port)
 }
