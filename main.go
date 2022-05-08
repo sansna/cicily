@@ -100,11 +100,16 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello World")
 }
 
+func ok(c *gin.Context) {
+	c.JSON(http.StatusOK, "hello world")
+}
+
 func main() {
 	r := gin.Default()
 	r.GET("/getmatch", f)
 	port := os.Getenv("PORT")
-	//r.Run(":"+port)
-	http.HandleFunc("/", hello)
-	http.ListenAndServe(":"+port, nil)
+	r.GET("/", ok)
+	r.Run(":" + port)
+	//http.HandleFunc("/", hello)
+	//http.ListenAndServe(":"+port, nil)
 }
