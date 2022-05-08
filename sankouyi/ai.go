@@ -4,8 +4,8 @@ import (
 	"log"
 	"sort"
 
-	"github.com/sansna/golang.go/card/models"
-	"github.com/sansna/golang.go/card/utils"
+	"github.com/sansna/cicily/v2/models"
+	"github.com/sansna/cicily/v2/utils"
 )
 
 // Analyzer Supported Types

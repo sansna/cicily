@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/sansna/golang.go/card/utils"
+	"github.com/sansna/cicily/v2/utils"
 )
 
 func main() {

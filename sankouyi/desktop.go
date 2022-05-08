@@ -1,13 +1,14 @@
 package sankouyi
 
 import (
-	"fmt"
+	//"fmt"
 	"math/rand"
 	"sort"
+	"strings"
 	"time"
 
-	"github.com/sansna/golang.go/card/models"
-	"github.com/sansna/golang.go/card/utils"
+	"github.com/sansna/cicily/v2/models"
+	"github.com/sansna/cicily/v2/utils"
 )
 
 const (
@@ -47,11 +48,11 @@ func (d *SKYDesktop) DistCard() []*models.Player {
 	for i := 0; i < total_cards-REMAIN_CARD; i++ {
 		pn := (i + startplayer) % PLAYER_COUNT
 		players[pn] = append(players[pn], permcards[i])
+		utils.RepAddGetCardMsg(&models.RepGetCardMsg{
+			U:     pn,
+			Cards: []int{permcards[i]},
+		})
 	}
-	// TODO 决策谁当地主
-	d.startPlayer = rand.Intn(4)
-	fmt.Println("本局地主", d.startPlayer)
-	players[d.startPlayer] = append(players[d.startPlayer], permcards[total_cards-REMAIN_CARD:]...)
 	// 理牌
 	for i := 0; i < PLAYER_COUNT; i++ {
 		sc := &utils.SKYSortCards{
@@ -59,8 +60,25 @@ func (d *SKYDesktop) DistCard() []*models.Player {
 			L:     len(players[i]),
 		}
 		sort.Sort(sc)
-		fmt.Println("第", i, "选手手牌", utils.GetAllCardsName(players[i], 54))
+		//fmt.Println("第", i, "选手手牌", utils.GetAllCardsName(players[i], 54))
+		utils.RepAddPrettyCardMsg(&models.RepPrettyCardMsg{
+			U:     i,
+			Cards: players[i],
+		})
 	}
+	// TODO 决策谁当地主
+	d.startPlayer = rand.Intn(4)
+	utils.RepAddDisplayMsg(&models.RepDisplayMsg{
+		U: -1,
+		M: "剩余4张牌：" + strings.Join(utils.GetAllCardsName(permcards[total_cards-REMAIN_CARD:], 54), ","),
+	})
+	utils.RepAddDisplayMsg(&models.RepDisplayMsg{
+		U: d.startPlayer,
+		M: "叫地主",
+	})
+	//fmt.Println("本局地主", d.startPlayer)
+
+	players[d.startPlayer] = append(players[d.startPlayer], permcards[total_cards-REMAIN_CARD:]...)
 	retPlayers := make([]*SKYPlayer, 0, PLAYER_COUNT)
 	for i := 0; i < PLAYER_COUNT; i++ {
 		retPlayers = append(retPlayers, &SKYPlayer{
@@ -139,7 +157,7 @@ func (d *SKYDesktop) AddPutHistory(r *models.Record) bool {
 		d.putHistory = append(d.putHistory, in)
 		d.lastPutIdx = len(d.putHistory)
 		// XXX
-		fmt.Println((*r).GetPlayerId(), utils.GetAllCardsName((*r).GetCards(), 54))
+		//fmt.Println((*r).GetPlayerId(), utils.GetAllCardsName((*r).GetCards(), 54))
 		return true
 	}
 	// 其他情况不许出牌

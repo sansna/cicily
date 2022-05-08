@@ -1,6 +1,6 @@
 package sankouyi
 
-import "github.com/sansna/golang.go/card/models"
+import "github.com/sansna/cicily/v2/models"
 
 type SKYMatch struct {
 	parts     []*SKYSingle

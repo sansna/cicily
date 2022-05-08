@@ -64,3 +64,13 @@ func P(in []string) {
 		fmt.Println(i)
 	}
 }
+
+func SortCardByNameReturnId(in []int) []int {
+	cards := Copy(in)
+	sc := &SKYSortCards{
+		Cards: &cards,
+		L:     len(cards),
+	}
+	sort.Sort(sc)
+	return cards
+}
