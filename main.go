@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 
@@ -95,9 +96,15 @@ func f(c *gin.Context) {
 
 }
 
+func hello(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "Hello World")
+}
+
 func main() {
 	r := gin.Default()
 	r.GET("/getmatch", f)
 	port := os.Getenv("PORT")
-	r.Run(":"+port)
+	//r.Run(":"+port)
+	http.HandleFunc("/", hello)
+	http.ListenAndServe(":"+port, nil)
 }
