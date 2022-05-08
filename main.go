@@ -108,6 +108,9 @@ func main() {
 	r := gin.Default()
 	r.GET("/getmatch", f)
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8888"
+	}
 	r.GET("/", ok)
 	r.Run(":" + port)
 	//http.HandleFunc("/", hello)
